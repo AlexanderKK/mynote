@@ -152,6 +152,8 @@ label[for] {
 .header {
 	width: 100%;
 	background: #03729e;
+	position: fixed;
+	z-index: 100;
 }
 
 .header__bar {
@@ -244,7 +246,7 @@ label[for] {
 	right: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 1;
+	z-index: 101;
 	padding-top: 20px;
 	background-color: #312f2f87;
 	opacity: 0;
@@ -393,7 +395,7 @@ label[for] {
 
 .hero {
 	font-size: 50px;
-	padding: 100px 0;
+	padding: 125px 0 50px;
 }
 
 .hero .hero__inner {
@@ -404,6 +406,75 @@ label[for] {
 }
 
 .hero .hero__title {
-	letter-spacing: 0.01em;
+	letter-spacing: 0.03em;
+}
+
+/* ------------------------------------------------------------ *\
+	Section Note
+\* ------------------------------------------------------------ */
+
+.section-note {
+	/*padding: 50px 0;
+	background-color: #03729e;
+	position: relative;*/
+}
+
+.section__inner {
+	position: relative;
+	min-height: 422px;
+	padding: 40px 0;
+}
+
+.section-note .section__background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-repeat: repeat;
+	background-position: center center;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+}
+
+.section-note .section__content {
+	text-align: justify;
+	max-width: 575px;
+	min-height: 340px;
+	margin: 0 auto;
+	border-radius: 8px;
+	padding: 25px 30px;
+	background-color: #edead7;
+}
+
+.section-note .section__text {
+	color: #000;
+	letter-spacing: 0.03em;
 	line-height: 1.4;
 }
+
+/* ------------------------------------------------------------ *\
+	Cursor Text
+\* ------------------------------------------------------------ */
+
+.cursorText {
+	display: inline-block;
+	vertical-align: middle;
+	margin-top: -3px;
+	width: 2px;
+	height: 20px;
+	background-color: #000;
+	animation: blink 1s steps(1) infinite;
+}
+
+/* ------------------------------------------------------------ *\
+	Animations
+\* ------------------------------------------------------------ */
+
+@keyframes blink {
+	0%, 100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+};

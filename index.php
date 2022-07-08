@@ -51,7 +51,17 @@
 		</div>
 
 		<div class="section-note">
-			
+			<div class="section__inner">
+				<div class="section__background" style="background-image: url(assets/images/desk.png);">
+					
+				</div>
+
+				<div class="section__content">
+					<p class="section__text">
+						<span class="cursorText"></span>
+					</p>
+				</div>
+			</div>
 		</div>
 
 		<footer class="footer">
