@@ -5,7 +5,7 @@
 
 	<title>My Note</title>
 
-	<link rel="shortcut icon" type="image/x-icon" href="css/images/favicon.ico">
+	<link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
 
 	<link rel="stylesheet" href="assets/css/style.css">
 	
@@ -57,9 +57,7 @@
 				</div>
 
 				<div class="section__content">
-					<p class="section__text">
-						<span class="cursorText"></span>
-					</p>
+					<p class="note section__text"><span class="noteCursor"></span></p>
 				</div>
 			</div>
 		</div>
@@ -171,6 +169,10 @@
 				</div>
 			</div>
 		</div>
+
+		<audio src="assets/sounds/keysound.mp3" class="keySound hidden"></audio>
 	</div>
+
+	<script src="assets/js/noteScript.js" type="application/javascript"></script>
 </body>
 </html>

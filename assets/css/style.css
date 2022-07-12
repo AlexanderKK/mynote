@@ -102,6 +102,11 @@ label[for] {
 	cursor: pointer;
 }
 
+[hidden],
+.hidden {
+	display: none;
+}
+
 /* ------------------------------------------------------------ *\
 	Wrapper
 \* ------------------------------------------------------------ */
@@ -438,32 +443,47 @@ label[for] {
 
 .section-note .section__content {
 	text-align: justify;
-	max-width: 575px;
+	max-width: 650px;
 	min-height: 340px;
 	margin: 0 auto;
 	border-radius: 8px;
 	padding: 25px 30px;
 	background-color: #edead7;
+	/*background-image: url("../images/note.png");*/
+	position: relative;
 }
 
 .section-note .section__text {
 	color: #000;
 	letter-spacing: 0.03em;
-	line-height: 1.4;
+	line-height: 40px;
+	word-break: break-word;
+	white-space: pre-wrap;
+	/*position: absolute;
+	top: 60px;
+	left: 140px;
+	width: 80%;*/
+	background: repeating-linear-gradient(transparent, transparent 39px, #000 40px);
+
+	/*position: relative;*/
 }
 
 /* ------------------------------------------------------------ *\
-	Cursor Text
+	Note Cursor
 \* ------------------------------------------------------------ */
 
-.cursorText {
+.noteCursor {
 	display: inline-block;
 	vertical-align: middle;
 	margin-top: -3px;
-	width: 2px;
-	height: 20px;
+	width: 1px;
+	height: 25px;
 	background-color: #000;
 	animation: blink 1s steps(1) infinite;
+
+	/*position: absolute;
+    top: 13px;
+    left: auto;*/
 }
 
 /* ------------------------------------------------------------ *\
