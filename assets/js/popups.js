@@ -50,5 +50,5 @@ setTimeout(() => {
 				popup.classList.remove("is-active");
 			}
 		}
-	})
+	});
 }, 1);

@@ -157,7 +157,7 @@ label[for] {
 .header {
 	width: 100%;
 	background: #03729e;
-	position: fixed;
+	/*position: fixed;*/
 	z-index: 100;
 }
 
@@ -358,6 +358,10 @@ label[for] {
 	transform: translateY(-5px);
 }
 
+.form-login .form__controls {
+	position: relative;
+}
+
 
 /* ------------------------------------------------------------ *\
 	Field
@@ -400,7 +404,7 @@ label[for] {
 
 .hero {
 	font-size: 50px;
-	padding: 125px 0 50px;
+	padding: 50px 0;
 }
 
 .hero .hero__inner {
@@ -450,7 +454,6 @@ label[for] {
 	padding: 25px 30px;
 	background-color: #edead7;
 	/*background-image: url("../images/note.png");*/
-	position: relative;
 }
 
 .section-note .section__text {
@@ -459,6 +462,7 @@ label[for] {
 	line-height: 40px;
 	word-break: break-word;
 	white-space: pre-wrap;
+	cursor: text;
 	/*position: absolute;
 	top: 60px;
 	left: 140px;
@@ -484,6 +488,17 @@ label[for] {
 	/*position: absolute;
     top: 13px;
     left: auto;*/
+}
+
+/* ------------------------------------------------------------ *\
+	Field Info
+\* ------------------------------------------------------------ */
+
+.fieldInfo {
+	font-size: 15px;
+	margin-top: 3px;
+	position: absolute;
+	right: 0;
 }
 
 /* ------------------------------------------------------------ *\
