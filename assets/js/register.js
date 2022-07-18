@@ -1,4 +1,4 @@
-const loginForm = document.querySelector('.form-login form');
+const loginForms = document.querySelector('.form-login form');
 const formBtn = document.querySelector('.form-login .form__btn');
 const fields = document.querySelectorAll(".field");
 const emailField = document.querySelector("#email");

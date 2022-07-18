@@ -6,6 +6,7 @@ setTimeout(() => {
 	const popups = document.querySelectorAll(".popup");
 	const closeBtnLogin = document.querySelector(".popup--login .popup__close");
 	const closeBtnRegister = document.querySelector(".popup--register .popup__close");
+	const errorMsgs = document.querySelectorAll(".errorMsg");
 	
 	//Login Popup
 	
@@ -21,6 +22,7 @@ setTimeout(() => {
 	
 	closeBtnLogin.addEventListener("mousedown", function() {
 		this.parentElement.parentElement.classList.remove("is-active");
+		this.parentElement.children[1].children[1].classList.add("hidden");
 	});
 	
 	//Register Popup
@@ -40,6 +42,7 @@ setTimeout(() => {
 	
 	closeBtnRegister.addEventListener("mousedown", function() {
 		this.parentElement.parentElement.classList.remove("is-active");
+		this.parentElement.children[1].children[1].classList.add("hidden");
 	});
 	
 	//Miscellaneous
@@ -48,6 +51,23 @@ setTimeout(() => {
 		for	(const popup of popups) {
 			if(evt.target == popup) {
 				popup.classList.remove("is-active");
+
+				for	(const errorMsg of errorMsgs) {
+					errorMsg.classList.add("hidden");
+				}
+			}
+		}
+	});
+
+	window.addEventListener("keydown", function(evt) {
+		// console.log(evt.code);
+		if(evt.code == "Escape") {
+			for	(const popup of popups) {
+				popup.classList.remove("is-active");
+			}
+
+			for	(const errorMsg of errorMsgs) {
+				errorMsg.classList.add("hidden");
 			}
 		}
 	});
