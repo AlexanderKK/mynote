@@ -498,7 +498,9 @@ label[for] {
 	font-size: 15px;
 	margin-top: 3px;
 	position: absolute;
+	top: auto;
 	right: 0;
+	color: #efefefe7;
 }
 
 /* ------------------------------------------------------------ *\
@@ -511,6 +513,10 @@ label[for] {
 	bottom: -45px;
 	left: 0;
 	color: #ef7070;
+}
+
+form[name='loginForm'] .errorMsg {
+	position: static;
 }
 
 /* ------------------------------------------------------------ *\

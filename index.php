@@ -93,11 +93,13 @@
 			
 				<div class="popup__body">
 					<div class="form-login">
-						<form action="mynote/login.php" method="POST" name="loginForm">
+						<form action="" method="POST" name="loginForm">
 							<div class="form__head">
 								<p>Not Registered? <a href="" class="link-register">Sign up from here</a></p>
 								
-								<p>Please enter your username and password</p>
+								<p class="loginMsg">Please enter your username and password</p>
+
+								<p class="errorMsg hidden">User not found</p>
 							</div>
 							
 							<div class="form__body">
@@ -105,7 +107,7 @@
 									<label for="username" class="form__label">Username</label>
 									
 									<div class="form__controls">
-										<input type="text" name="username" class="field field--login">
+										<input type="text" id="usernameLogin" name="username" class="field field--login">
 									</div>
 								</div>
 								
@@ -113,19 +115,87 @@
 									<label for="password" class="form__label">Password</label>
 									
 									<div class="form__controls">
-										<input type="password" name="password" class="field field--login">
+										<input type="password" id="passwordLogin" name="password" class="field field--login">
 									</div>
 								</div>
 							</div>
 							
 							<div class="form__actions">
-								<button type="submit" name="submit" class="btn form__btn">Login</button>
+								<input type="submit" value="Log in" name="submitLoginForm" class="btn form__btn" id="login">
 							</div>
 							
 							<div class="form__foot">
 								
 							</div>
 						</form>
+
+						<?php
+							if(isset($_POST['submitLoginForm'])) {
+								$username = $_POST['username'];
+								$password = $_POST['password'];
+
+								if(isset($username) && isset($password)) {
+									if($username !== "" && $password !== "" &&
+									!preg_match('/\s/', $username) && !preg_match('/\s/', $password)) {
+										$_SESSION['username'] = $username;
+										$_SESSION['password'] = $password;
+
+										$query = "SELECT users.id as userID, ranks.title as title FROM users JOIN ranks ON users.rank = ranks.id WHERE username = '$username' AND password = '$password'";
+										$result = $mysqli->query($query) or die($mysqli -> error());
+										$row = $result -> fetch_array();
+
+										if($result -> num_rows == 1) {
+											$_SESSION['loggedIn'] = true;
+											$_SESSION['userID'] = $row['userID'];
+
+											if($row['title'] == 'user') {
+												header("Location: user.php");
+											}
+											else if($row['title'] == 'support') {
+												header("Location: support.php");
+											}
+											else if($row['title'] == 'admin') {
+												header("Location: admin.php");
+											}
+										}
+										else {
+											?>
+
+											<script type="text/javascript">
+
+												const popups = document.querySelectorAll(".popup");
+												const errorMsgs = document.querySelectorAll(".errorMsg");
+												const loginMsg = document.querySelector(".loginMsg");
+
+												for	(const popup of popups) {
+													const popupClasses = popup.classList;
+
+													if(popupClasses.contains("popup--login")) {
+														popup.classList.add("is-active");
+													}
+												}
+
+												for	(const errorMsg of errorMsgs) {
+													errorMsg.classList.remove("hidden");
+													loginMsg.classList.add("hidden");
+												}
+
+												const usernameFieldLogin = document.querySelector("#usernameLogin");
+												const passwordFieldLogin = document.querySelector("#passwordLogin");
+
+												usernameFieldLogin.value = "<?php echo $_SESSION['username']; ?>";
+												passwordFieldLogin.value = "<?php echo $_SESSION['password']; ?>";
+											</script>
+
+											<?php
+											// $_SESSION['wrongCredentials'] = true;
+											// header("Location: index.php");
+
+										}
+									}
+								}
+							}
+						?>
 					</div>
 				</div>
 			</div>
@@ -151,7 +221,7 @@
 									<label for="email" class="form__label">Email</label>
 									
 									<div class="form__controls">
-										<input type="email" id="email" name="email" class="field field--register" placeholder="example@gmail.com" pattern=".{7,30}" required title="Email must be between 7 and 30 characters!">
+										<input type="email" id="emailRegister" name="email" class="field field--register" placeholder="example@gmail.com" pattern=".{7,30}" title="Email must be between 7 and 30 characters!">
 
 										<p class="fieldInfo hidden">No whitespaces allowed</p>
 									</div>
@@ -161,7 +231,7 @@
 									<label for="username" class="form__label">Username</label>
 									
 									<div class="form__controls">
-										<input type="text" id="username" name="username" class="field field--register" pattern=".{5,15}" required title="Username must be between 5 and 15 characters!">
+										<input type="text" id="usernameRegister" name="username" class="field field--register" pattern=".{5,15}" title="Username must be between 5 and 15 characters!">
 
 										<p class="fieldInfo hidden">No whitespaces allowed</p>
 									</div>
@@ -171,7 +241,7 @@
 									<label for="password" class="form__label">Password</label>
 									
 									<div class="form__controls">
-										<input type="password" id="password" name="password" class="field field--register" pattern=".{7,20}" required title="Password must be between 7 and 20 characters!">
+										<input type="password" id="passwordRegister" name="password" class="field field--register" pattern=".{7,20}" title="Password must be between 7 and 20 characters!">
 
 										<p class="fieldInfo hidden">No whitespaces allowed</p>
 									</div>
@@ -179,7 +249,7 @@
 							</div>
 							
 							<div class="form__actions">
-								<button type="submit" name="submit" class="btn form__btn" id="register">Register</button>
+								<input type="submit" value="Register" name="submitRegisterForm" class="btn form__btn" id="register">
 							</div>
 							
 							<div class="form__foot">
@@ -188,7 +258,7 @@
 						</form>
 
 						<?php
-							if(isset($_POST['submit'])) {
+							if(isset($_POST['submitRegisterForm'])) {
 								$email = $_POST['email'];
 								$username = $_POST['username'];
 								$password = $_POST['password'];
@@ -274,8 +344,8 @@
 													errorMsg.classList.remove("hidden");
 												}
 
-												const emailFieldRegister = document.querySelector(".popup--register #email");
-												const usernameFieldRegister = document.querySelector(".popup--register #username");
+												const emailFieldRegister = document.querySelector("#emailRegister");
+												const usernameFieldRegister = document.querySelector("#usernameRegister");
 
 												emailFieldRegister.value = "<?php echo $_SESSION['email']; ?>";
 												usernameFieldRegister.value = "<?php echo $_SESSION['username']; ?>";
@@ -295,9 +365,9 @@
 				</div>
 			</div>
 		</div>
-
-		<audio src="assets/sounds/keysound.mp3" class="keySound hidden"></audio>
 	</div>
+
+	<audio src="assets/sounds/keysound.mp3" class="keySound hidden"></audio>
 
 	<script src="assets/js/noteScript.js" type="application/javascript"></script>
 

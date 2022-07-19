@@ -1,10 +1,11 @@
-const loginForms = document.querySelector('.form-login form');
-const formBtn = document.querySelector('.form-login .form__btn');
+// const loginForms = document.querySelector('.form-login form');
+// const emailField = document.querySelector("#email");
+// const usernameField = document.querySelector("#username");
+// const passwordField = document.querySelector("#password");
+// const fieldsInfo = document.querySelectorAll(".fieldInfo");
 const fields = document.querySelectorAll(".field");
-const emailField = document.querySelector("#email");
-const usernameField = document.querySelector("#username");
-const passwordField = document.querySelector("#password");
-const fieldsInfo = document.querySelectorAll(".fieldInfo");
+const registerBtn = document.querySelector("#register");
+const loginBtn = document.querySelector("#login");
 
 function prevDefault(e) {
 	event.preventDefault();
@@ -45,7 +46,26 @@ fields.forEach(function(field) {
 	});
 });
 
+registerBtn.addEventListener("click", function() {
+	if(document.querySelector("#emailRegister").value === "" ||
+	document.querySelector("#usernameRegister").value === "" ||
+	document.querySelector("#passwordRegister").value === "") {
+		this.setAttribute('type', "");
+	}
+	else {
+		this.setAttribute('type', "submit");
+	}
+});
 
+loginBtn.addEventListener("click", function() {
+	if(document.querySelector("#usernameLogin").value === "" ||
+	document.querySelector("#passwordLogin").value === "") {
+		this.setAttribute('type', "");
+	}
+	else {
+		this.setAttribute('type', "submit");
+	}
+});
 
 	/* Data which will be sent to server */
 	// let postObj = {

@@ -10,23 +10,23 @@
 
 const note = document.querySelector(".note");
 const noteCursor = document.querySelector(".noteCursor");
-const keySound = document.querySelector(".keySound");
+// const keySound = document.querySelector(".keySound");
 const popupLogin = document.querySelector(".popup--login");
-const popupRegister = document.querySelector(".popup--register");
+// const popupRegister = document.querySelector(".popup--register");
 
 /**
  * String Declarations
  * 
  * @type {String}
  */
-const characters = "абвгдежзийѝклмнопрстуфхцчшщьъюяabcdefghijklmnopqrstuvwxyz1234567890`\'\"\\~!@#$%^&*()-=_+[]{};:.<>,|?/№€§ї▄▐►╡♠☺◘♦";
+// const characters = "абвгдежзийѝклмнопрстуфхцчшщьъюяabcdefghijklmnopqrstuvwxyz1234567890`\'\"\\~!@#$%^&*()-=_+[]{};:.<>,|?/№€§ї▄▐►╡♠☺◘♦";
 
 /**
  * Array Declarations
  * 
  * @type {Array<String>}
  */
-const splitCharacters = characters.split("");
+// const splitCharacters = characters.split("");
 
 note.textContent = localStorage.getItem("note");
 note.append(noteCursor);
@@ -42,13 +42,13 @@ window.addEventListener("load", function() {
 	noteCursor.scrollIntoView();
 });
 
-// /**
-//  * Window Event Listener - Key Down
-//  * 
-//  * @param {String} keydown - The event type to listen for
-//  * @param {Function({Object} evt)} The handler to be called when the event is fired
-//  * @fires window#keydown
-//  */
+/**
+ * Window Event Listener - Key Down
+ * 
+ * @param {String} keydown - The event type to listen for
+ * @param {Function({Object} evt)} The handler to be called when the event is fired
+ * @fires window#keydown
+ */
 // note.addEventListener("click", function(evt) {
 
 // 	if(evt.target === note) {

@@ -5,6 +5,7 @@
 	$password = 'impeachment*';
 
 	$connection = mysqli_connect($localhost, $username, $password, $db);
+	$mysqli = new mysqli($localhost, $username, $password, $db);
 
 	if($connection) {
 		// echo 'Success';
