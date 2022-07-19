@@ -18,7 +18,7 @@
 
 <?php
 	require_once('inc/db.php');
-
+	session_start();
 	// if(isset($_SESSION['wrongCredentials']) && $_SESSION['wrongCredentials']) {
 	// 	echo $_SESSION['isPresent'];
 	// }
@@ -284,14 +284,15 @@
 											$result = mysqli_query($connection, $query);
 											
 											if($result) {
-												$query = "SELECT users.id, ranks.title as title FROM users JOIN ranks ON users.rank = ranks.id WHERE username = '$username' AND password = '$password'";
+												$query = "SELECT users.id as userID, ranks.title as title FROM users JOIN ranks ON users.rank = ranks.id WHERE username = '$username' AND password = '$password'";
 												$result = mysqli_query($connection, $query);
 												$row = mysqli_fetch_assoc($result);
 												
 												$_SESSION['loggedIn'] = true;
-												$_SESSION['userID'] = $row['users.id'];
+												$_SESSION['userID'] = $row['userID'];
 
 												//Check Rank
+
 												if($row['title'] == 'user') {
 													?>
 

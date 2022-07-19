@@ -16,6 +16,11 @@
 
 <?php
 	require_once('inc/db.php');
+	session_start();
+
+	// echo $_SESSION['userID'];
+	// echo $_SESSION['loggedIn'];
+	// echo $_SESSION['notPresent'];
 
 	// if(isset($_SESSION['wrongCredentials']) && $_SESSION['wrongCredentials']) {
 	// 	echo $_SESSION['isPresent'];
@@ -28,13 +33,13 @@
 			<div class="shell">
 				<div class="header__bar">
 					<div class="header__aside">
-						<a href="" class="logo">
+						<a href="index.php" class="logo">
 							<img src="assets/images/logo.png" alt="Logo Icon">
 						</a>
 						<nav class="nav header__nav">
 							<ul>
 								<li>
-									<a href="">Home</a>
+									<a href="index.php">Home</a>
 								</li>
 
 								<li>
@@ -49,15 +54,22 @@
 					</div>
 
 					<div class="nav-utilities">
-						<a href="#" class="link-login"><img src="assets/images/user.png" alt="User Icon"></a>
+						<form action="" method="POST" name="formLogout">
+							<button type="submit" name="submitFormLogout"><a href="#" class="link-logout"><img src="assets/images/user.png" alt="Log Out"></a></button>
+						</form>
 					</div>
 				</div>
 			</div>
 		</header>
 
-		<div class="hero">
+		<div class="hero hero--user">
 			<div class="hero__inner">
-				<h1 class="hero__title">Welcome to MyNote! Type or search on your demand</h1>
+				<h1 class="hero__title">Welcome, <span class="userSpan">
+					<?php 
+						$result = $mysqli->query("SELECT username FROM users WHERE id = '{$_SESSION['userID']}'") or die($mysqli->error);
+						$row = $result->fetch_array();
+						echo $row['username'];
+					?></span><br> Type or search on your demand</h1>
 			</div>
 		</div>
 
@@ -84,5 +96,12 @@
 	<audio src="assets/sounds/keysound.mp3" class="keySound hidden"></audio>
 
 	<script src="assets/js/noteScriptUser.js" type="application/javascript"></script>
+
+	<?php
+		if(isset($_POST['submitFormLogout'])) {
+			session_destroy();
+			header("Location: index.php");
+		}
+	?>
 </body>
 </html>

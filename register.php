@@ -2,6 +2,7 @@
 	require_once 'inc/db.php';
 
 	// header("Location: index.php");
+	// echo $_POST['data'];
 ?>
 <?php
 	// 	echo '<meta http-equiv="refresh" content="0; url=inc/db.php">';
