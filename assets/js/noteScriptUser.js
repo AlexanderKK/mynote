@@ -13,6 +13,7 @@ const noteCursor = document.querySelector(".noteCursor");
 const keySound = document.querySelector(".keySound");
 const popupLogin = document.querySelector(".popup--login");
 const popupRegister = document.querySelector(".popup--register");
+const q = document.querySelector("#q");
 
 /**
  * String Declarations
@@ -28,8 +29,8 @@ const characters = "абвгдежзийѝклмнопрстуфхцчшщьъю
  */
 const splitCharacters = characters.split("");
 
-note.textContent = localStorage.getItem("note");
-note.append(noteCursor);
+// note.textContent = localStorage.getItem("note");
+// note.append(noteCursor);
 
 /**
  * Window Event Listener - Page Load
@@ -49,54 +50,55 @@ window.addEventListener("load", function() {
  * @param {Function({Object} evt)} The handler to be called when the event is fired
  * @fires window#keydown
  */
+window.addEventListener("keydown", function(evt) {
+//Print pressed key
+// console.log(evt.key);
+// if(!popupLogout.classList.contains("is-active")) {
 
+	for(const char of splitCharacters) {
+		if(char === evt.key.toLowerCase()) {
+			note.innerText += evt.key;
+		}
+	}
+	if(evt.key === "Backspace") {
+		note.innerText = note.innerText.substr(0, note.innerText.length - 1);
+	}
+	else if(evt.code === "Space") {
+		note.innerText += " ";
+	}
+	else if (evt.key === "Enter") {
+		note.removeChild(noteCursor);
+		note.innerHTML += "<br>";
+	}
+	else if(evt.code === "Tab") {
+		note.innerText += "\t";
+	}
+	else if(evt.key === "Shift") {
+		evt.key.toUpperCase();
+	}
+	note.append(noteCursor);
 
-		window.addEventListener("keydown", function(evt) {
-		//Print pressed key
-		// console.log(evt.key);
-		// if(!popupLogout.classList.contains("is-active")) {
+	noteCursor.scrollIntoView();
+	
+	// localStorage.setItem("note", note.innerText);
 
-			for(const char of splitCharacters) {
-				if(char === evt.key.toLowerCase()) {
-					note.textContent += evt.key;
-				}
-			}
-			if(evt.key === "Backspace") {
-				note.textContent = note.textContent.substr(0, note.textContent.length - 1);
-			}
-			else if(evt.code === "Space") {
-				note.textContent += " ";
-			}
-			else if (evt.key === "Enter") {
-				note.textContent += "\n";
-			}
-			else if(evt.code === "Tab") {
-				note.textContent += "\t";
-			}
-			else if(evt.key === "Shift") {
-				evt.key.toUpperCase();
-			}
-			note.append(noteCursor);
+	// q.value = note.textContent;
+// }
+});
 
-			noteCursor.scrollIntoView();
-			
-			localStorage.setItem("note", note.textContent);
-		// }
-		});
+/**
+ * Window Event Listener - Key Up
+ * 
+ * @param {String} keyup - The event type to listen for
+ * @param {Function({Object} evt)} The handler to be called when the event is fired
+ * @fires window#keyup
+ */
+window.addEventListener("keyup", function(evt) {
+	// if(!popupLogin.classList.contains("is-active")) {
+		// const keySoundAudio = new Audio(keySound.src);
+		// keySoundAudio.play();
 
-		/**
-		 * Window Event Listener - Key Up
-		 * 
-		 * @param {String} keyup - The event type to listen for
-		 * @param {Function({Object} evt)} The handler to be called when the event is fired
-		 * @fires window#keyup
-		 */
-		window.addEventListener("keyup", function(evt) {
-			// if(!popupLogin.classList.contains("is-active")) {
-				// const keySoundAudio = new Audio(keySound.src);
-				// keySoundAudio.play();
-
-				//Play key sound
-				new Audio(keySound.src).play();
-			// }
-		});
+		//Play key sound
+		new Audio(keySound.src).play();
+	// }
+});

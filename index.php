@@ -22,6 +22,11 @@
 	// if(isset($_SESSION['wrongCredentials']) && $_SESSION['wrongCredentials']) {
 	// 	echo $_SESSION['isPresent'];
 	// }
+	
+	if(isset($_SESSION['userID']) && $_SESSION['loggedIn']) {
+		header("Location: user.php");
+	}
+	else {
 ?>
 
 <body>
@@ -72,6 +77,22 @@
 				<div class="section__content">
 					<p class="note section__text"><span class="noteCursor"></span></p>
 				</div>
+
+				<?php 
+					$content = $mysqli->query("SELECT content FROM note WHERE id = 1") or die($mysqli->error);
+					if($content->num_rows == 1) {
+						$row = $content->fetch_array();
+				?>
+					<script type="text/javascript">
+						const noteN = document.querySelector(".note");
+						// const noteNcursor = document.querySelector(".noteCursor");
+
+						noteN.innerHTML = '<?php echo $row['content']; ?>';
+						// noteN.append(noteNcursor);
+					</script>
+				<?php
+					}
+				?>
 			</div>
 		</div>
 
@@ -393,4 +414,8 @@
 
 	<script src="assets/js/register.js" type="application/javascript"></script>
 </body>
+
+<?php
+	}
+?>
 </html>

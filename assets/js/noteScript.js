@@ -28,7 +28,7 @@ const popupLogin = document.querySelector(".popup--login");
  */
 // const splitCharacters = characters.split("");
 
-note.textContent = localStorage.getItem("note");
+// note.textContent = localStorage.getItem("note");
 note.append(noteCursor);
 
 /**
