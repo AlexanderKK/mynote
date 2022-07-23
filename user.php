@@ -152,7 +152,8 @@
 			<?php
 				if(isset($_POST['submitFormLogout'])) {
 					session_destroy();
-					header("Location: index.php");
+					// header("Location: index.php");
+					echo '<meta http-equiv="refresh" content="0; url=index.php">';
 				}
 			?>
 		</body>

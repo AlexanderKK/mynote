@@ -19,6 +19,8 @@
 <?php
 	require_once('inc/db.php');
 	session_start();
+
+	include_once('inc/func.php');
 	// if(isset($_SESSION['wrongCredentials']) && $_SESSION['wrongCredentials']) {
 	// 	echo $_SESSION['isPresent'];
 	// }
@@ -165,51 +167,22 @@
 										$result = mysqli_query($connection, $query);
 										if(mysqli_num_rows($result) == 1) {
 											$row = mysqli_fetch_assoc($result);
-											// $_SESSION['encOnLogin'] = true;
-											// include_once 'encryption.php';
 
-											$ciphering = "BF-CBC";
-											$options = 0;
+											$encArray[] = array(
+												'enc_iv1' => $row['enc_iv1'],
+												'enc_iv2' => $row['enc_iv2'],
+												'enc_iv3' => $row['enc_iv3'],
+												'enc_key1' => $row['enc_key1'],
+												'enc_key2' => $row['enc_key2'],
+												'enc_key3' => $row['enc_key3'],
+											);
 
-											$encryption_iv1 = $row['enc_iv2'];
-											$encryption_key1 = $row['enc_key2'];
-											$encryption1 = openssl_encrypt($password, $ciphering, $encryption_key1, $options, $encryption_iv1);
-
-											$prefixSalt = "я1%т*^ъ52!*ve9ь40@0е1з@3&pг(j}#&!ъ";
-											$encryption_iv2 = $row['enc_iv1'];
-											$encryption_key2 = $row['enc_key1'];
-											$encryption2 = openssl_encrypt($prefixSalt, $ciphering, $encryption_key2, $options, $encryption_iv2);
-
-											$suffixSalt = "и1!№§(!)]7{\$ъ*!ь?>>.ъ\"\"4:\$*п@№д9ф2з+_щ,'|";
-											$encryption_iv3 = $row['enc_iv3'];
-											$encryption_key3 = $row['enc_key3'];
-											$encryption3 = openssl_encrypt($suffixSalt, $ciphering, $encryption_key3, $options, $encryption_iv3);
-
-											$password = $encryption2 . $encryption1 . $encryption3;
-
-											//Decryption :)
-
-											// $query = "SELECT password FROM users WHERE username = '$username'";
-											// $result = mysqli_query($connection, $query);
-											// $row = mysqli_fetch_assoc($result);
-											// $wantedPassword = $row['password'];
-
-											// $wantedEncryption = openssl_encrypt($wantedPassword, $ciphering, $encryption_key1, $options, $encryption_iv1);
-
-											// $decryption_iv1 = $encryption_iv1;
-											// $decryption_key1 = $encryption_key1;
-											// $decryption1 = openssl_decrypt($wantedEncryption, $ciphering, $decryption_key1, $options, $encryption_iv1);
-
-											// $decryption_iv2 = $encryption_iv2;
-											// $decryption_key2 = $encryption_key2;
-											// $decryption2 = openssl_decrypt($encryption2, $ciphering, $decryption_key2, $options, $encryption_iv2);
-
-											// $decryption_iv3 = $encryption_iv3;
-											// $decryption_key3 = $encryption_key3;
-											// $decryption3 = openssl_decrypt($encryption3, $ciphering, $decryption_key3, $options, $encryption_iv3);
-
-											// $decryptedPassword = $decryption1;
-											// echo $decryptedPassword;
+											/**
+											 * checkEncryptedPassword
+											 * 
+											 * @var password
+											 */
+											$password = checkEncryptedPassword($encArray, $password);
 										}
 
 										$query = "SELECT users.id as userID, ranks.title as title FROM users JOIN ranks ON users.rank = ranks.id WHERE username = '$username' AND password = '$password'";
@@ -260,9 +233,6 @@
 											</script>
 
 											<?php
-											// $_SESSION['wrongCredentials'] = true;
-											// header("Location: index.php");
-
 										}
 									}
 								}
@@ -293,7 +263,7 @@
 									<label for="email" class="form__label">Email</label>
 									
 									<div class="form__controls">
-										<input type="email" id="emailRegister" name="email" class="field field--register" placeholder="example@gmail.com" pattern=".{7,30}" title="Email must be between 7 and 30 characters!">
+										<input type="email" id="emailRegister" name="email" class="field field--register" placeholder="example@gmail.com" pattern=".{7,50}" title="Email must be between 7 and 50 characters!">
 
 										<p class="fieldInfo hidden">No whitespaces allowed</p>
 									</div>
@@ -353,41 +323,15 @@
 										//Insert if is not present
 										if(isset($_SESSION['notPresent']) && $_SESSION['notPresent']) {
 											//Password encryption
-											// include_once 'encryption.php';
-
-											$ciphering = "BF-CBC";
-											$options = 0;
-
-											$iv_length1 = openssl_cipher_iv_length($ciphering);
-											$encryption_iv1 = random_bytes($iv_length1);
-											$encryption_key1 = openssl_digest(php_uname(), 'MD5', TRUE);
-											$encryption1 = openssl_encrypt($password, $ciphering, $encryption_key1, $options, $encryption_iv1);
-
-											$prefixSalt = "я1%т*^ъ52!*ve9ь40@0е1з@3&pг(j}#&!ъ";
-											$iv_length2 = openssl_cipher_iv_length($ciphering);
-											$encryption_iv2 = random_bytes($iv_length2);
-											$encryption_key2 = openssl_digest(php_uname(), 'MD5', TRUE);
-											$encryption2 = openssl_encrypt($prefixSalt, $ciphering, $encryption_key2, $options, $encryption_iv2);
-
-											$suffixSalt = "и1!№§(!)]7{\$ъ*!ь?>>.ъ\"\"4:\$*п@№д9ф2з+_щ,'|";
-											$iv_length3 = openssl_cipher_iv_length($ciphering);
-											$encryption_iv3 = random_bytes($iv_length3);
-											$encryption_key3 = openssl_digest(php_uname(), 'MD5', TRUE);
-											$encryption3 = openssl_encrypt($suffixSalt, $ciphering, $encryption_key3, $options, $encryption_iv3);
-
-											// Add encryption keys
-											$query = "INSERT INTO `enc`(`enc_key1`, `enc_key2`, `enc_key3`, `enc_iv1`, `enc_iv2`, `enc_iv3`) VALUES ('$encryption_key2', '$encryption_key1', '$encryption_key3', '$encryption_iv2', '$encryption_iv1', '$encryption_iv3')";
-											$result = mysqli_query($connection, $query);
-
-											//Select enc_id
-											$query = "SELECT id FROM enc WHERE enc_key1 = '$encryption_key2' AND enc_key2 = '$encryption_key1' AND enc_key3 = '$encryption_key3' AND enc_iv1 = '$encryption_iv2' AND enc_iv2 = '$encryption_iv1' AND enc_iv3 = '$encryption_iv3'";
-											$result = mysqli_query($connection, $query);
-											$row = mysqli_fetch_assoc($result);											
-											if(isset($row['id'])) {
-												$enc_id = $row['id'];
-											}
-
-											$password = $encryption2 . $encryption1 . $encryption3;
+											
+											/**
+											 * Encrypt Password
+											 * 
+											 * @var $password
+											 */
+											$result = encryptPassword($connection, $password);
+											$enc_id = $result[0]['enc_id'];
+											$password = $result[0]['password'];
 
 											$query = "INSERT INTO `users`(`email`, `username`, `password`, `enc_id`) VALUES ('$email', '$username', '$password', '$enc_id')";
 											$result = mysqli_query($connection, $query);
@@ -401,27 +345,9 @@
 												$_SESSION['userID'] = $row['userID'];
 
 												//Check Rank
-
 												if($row['title'] == 'user') {
-													?>
-
-													<script type="text/javascript">
-														// const registerForm = document.querySelector("form[name='registerForm'");
-														// registerForm.addEventListener("submit", function prevDefault(e) {
-														// 	return true;
-														// });
-
-													</script>
-
-													<?php
-														echo '<meta http-equiv="refresh" content="0; url=user.php">';
-													?>
-
-													<script type="text/javascript">
-														
-													</script>
-
-													<?php
+													// echo '<meta http-equiv="refresh" content="0; url=user.php">';
+													header("Location: user.php");
 												}
 												else if ($row['title'] == 'support') {
 													header("Location: support.php");
@@ -435,10 +361,6 @@
 											?>
 
 											<script type="text/javascript">
-												// const registerForm = document.querySelector("form[name='registerForm'");
-												// registerForm.addEventListener("submit", function prevDefault(e) {
-												// 	event.preventDefault();
-												// });
 												const popups = document.querySelectorAll(".popup");
 												const errorMsgs = document.querySelectorAll(".errorMsg");
 
@@ -462,10 +384,6 @@
 											</script>
 
 											<?php
-											// $_SESSION['wrongCredentials'] = true;
-											// header("Location: index.php");
-											
-
 										}
 									}
 								}
@@ -492,12 +410,6 @@
 		note.addEventListener("click", function() {
 			popupLogin.classList.add("is-active");
 		});
-
-		// window.addEventListener("keydown", function(evt) {
-		// 	if(evt.target !== note) {
-		// 		popupLogin.classList.add("is-active");
-		// 	}
-		// });
 	</script>
 
 	<script src="assets/js/register.js" type="application/javascript"></script>

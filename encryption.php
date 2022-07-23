@@ -52,6 +52,33 @@
 	// echo "Password before encryption: " . $password . "\n";
 
 
+
+	//Decryption :)
+
+	// $query = "SELECT password FROM users WHERE username = '$username'";
+	// $result = mysqli_query($connection, $query);
+	// $row = mysqli_fetch_assoc($result);
+	// $wantedPassword = $row['password'];
+
+	// $wantedEncryption = openssl_encrypt($wantedPassword, $ciphering, $encryption_key1, $options, $encryption_iv1);
+
+	// $decryption_iv1 = $encryption_iv1;
+	// $decryption_key1 = $encryption_key1;
+	// $decryption1 = openssl_decrypt($wantedEncryption, $ciphering, $decryption_key1, $options, $encryption_iv1);
+
+	// $decryption_iv2 = $encryption_iv2;
+	// $decryption_key2 = $encryption_key2;
+	// $decryption2 = openssl_decrypt($encryption2, $ciphering, $decryption_key2, $options, $encryption_iv2);
+
+	// $decryption_iv3 = $encryption_iv3;
+	// $decryption_key3 = $encryption_key3;
+	// $decryption3 = openssl_decrypt($encryption3, $ciphering, $decryption_key3, $options, $encryption_iv3);
+
+	// $decryptedPassword = $decryption1;
+	// echo $decryptedPassword;
+	
+
+
 	// if(isset($_SESSION['encOnLogin']) && $_SESSION['encOnLogin']) {
 	// 	$encryption3 = openssl_encrypt($password, $ciphering2, $row['enc_key1'], $options, $row['enc_iv1']);
 	// 	$encryption2 = openssl_encrypt($password, $ciphering2, $row['enc_key2'], $options, $row['enc_iv2']);
@@ -63,9 +90,9 @@
 
 
 	//Assigning encrypted password
-	$password = $encryption;
-	echo $encryption_iv23 . "\n";
-	echo $encryption_iv;
+	// $password = $encryption;
+	// echo $encryption_iv23 . "\n";
+	// echo $encryption_iv;
 
 	// echo "Password after encryption: " . $password . "\n";
 

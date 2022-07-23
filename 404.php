@@ -15,7 +15,7 @@
 
 	<title></title>
 
-	<link rel="shortcut icon" type="image/x-icon" href="css/images/favicon.ico" />
+	<link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
 
 	<link rel="stylesheet" href="css/style.css" />
 </head>

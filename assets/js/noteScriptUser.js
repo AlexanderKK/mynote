@@ -20,7 +20,7 @@ const q = document.querySelector("#q");
  * 
  * @type {String}
  */
-const characters = "абвгдежзийѝклмнопрстуфхцчшщьъюяabcdefghijklmnopqrstuvwxyz1234567890`\'\"\\~!@#$%^&*()-=_+[]{};:.<>,|?/№€§ї▄▐►╡♠☺◘♦";
+const characters = "абвгдежзийѝклмнопрстуфхцчшщьъюяabcdefghijklmnopqrstuvwxyz1234567890`\"~!@#$%^&*()-=_+[]{};:.<>,|?/№€§ї▄▐►╡♠☺◘♦";
 
 /**
  * Array Declarations
@@ -52,7 +52,7 @@ window.addEventListener("load", function() {
  */
 window.addEventListener("keydown", function(evt) {
 //Print pressed key
-// console.log(evt.key);
+// console.log(evt.key, evt.code);
 // if(!popupLogout.classList.contains("is-active")) {
 
 	for(const char of splitCharacters) {
@@ -94,11 +94,7 @@ window.addEventListener("keydown", function(evt) {
  * @fires window#keyup
  */
 window.addEventListener("keyup", function(evt) {
-	// if(!popupLogin.classList.contains("is-active")) {
-		// const keySoundAudio = new Audio(keySound.src);
-		// keySoundAudio.play();
+	//Play key sound
 
-		//Play key sound
-		new Audio(keySound.src).play();
-	// }
+	// new Audio(keySound.src).play();
 });
