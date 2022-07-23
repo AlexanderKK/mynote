@@ -152,14 +152,48 @@
 
 						<?php
 							if(isset($_POST['submitLoginForm'])) {
-								$username = $_POST['username'];
-								$password = $_POST['password'];
+								$username = htmlspecialchars(mysqli_real_escape_string($connection, $_POST['username']));
+								$password = htmlspecialchars(mysqli_real_escape_string($connection, $_POST['password']));
 
 								if(isset($username) && isset($password)) {
 									if($username !== "" && $password !== "" &&
 									!preg_match('/\s/', $username) && !preg_match('/\s/', $password)) {
 										$_SESSION['username'] = $username;
-										$_SESSION['password'] = $password;
+										// $_SESSION['password'] = $password;
+
+										// $query = "SELECT enc_iv, enc_key FROM users WHERE username = '$username'";
+										// $result = mysqli_query($connection, $query);
+										// $row = mysqli_fetch_assoc($result);
+										// $encryption_iv = $row['enc_iv'];
+										// $encryption_key = $row['enc_key'];
+
+										$query = "SELECT enc_key1, enc_key2, enc_key3, enc_iv1, enc_iv2, enc_iv3 FROM enc JOIN users ON enc.id = users.enc_id WHERE username = '$username'";
+										$result = mysqli_query($connection, $query);
+										if(mysqli_num_rows($result) == 1) {
+											$row = mysqli_fetch_assoc($result);
+											// $_SESSION['encOnLogin'] = true;
+											// include_once 'encryption.php';
+
+											$ciphering = "BF-CBC";
+											$options = 0;
+
+											$encryption_iv1 = $row['enc_iv2'];
+											$encryption_key1 = $row['enc_key2'];
+											$encryption1 = openssl_encrypt($password, $ciphering, $encryption_key1, $options, $encryption_iv1);
+
+											$prefixSalt = "я1%т*^ъ52!*ve9ь40@0е1з@3&pг(j}#&!ъ";
+											$encryption_iv2 = $row['enc_iv1'];
+											$encryption_key2 = $row['enc_key1'];
+											$encryption2 = openssl_encrypt($prefixSalt, $ciphering, $encryption_key2, $options, $encryption_iv2);
+
+											$suffixSalt = "и1!№§(!)]7{\$ъ*!ь?>>.ъ\"\"4:\$*п@№д9ф2з+_щ,'|";
+											$encryption_iv3 = $row['enc_iv3'];
+											$encryption_key3 = $row['enc_key3'];
+											$encryption3 = openssl_encrypt($suffixSalt, $ciphering, $encryption_key3, $options, $encryption_iv3);
+
+											$password = $encryption2 . $encryption1 . $encryption3;
+											// echo $password;
+										}
 
 										$query = "SELECT users.id as userID, ranks.title as title FROM users JOIN ranks ON users.rank = ranks.id WHERE username = '$username' AND password = '$password'";
 										$result = $mysqli->query($query) or die($mysqli -> error());
@@ -205,7 +239,7 @@
 												const passwordFieldLogin = document.querySelector("#passwordLogin");
 
 												usernameFieldLogin.value = "<?php echo $_SESSION['username']; ?>";
-												passwordFieldLogin.value = "<?php echo $_SESSION['password']; ?>";
+												// passwordFieldLogin.value = "<?php //echo $_SESSION['password']; ?>";
 											</script>
 
 											<?php
@@ -280,9 +314,9 @@
 
 						<?php
 							if(isset($_POST['submitRegisterForm'])) {
-								$email = $_POST['email'];
-								$username = $_POST['username'];
-								$password = $_POST['password'];
+								$email = htmlspecialchars(mysqli_real_escape_string($connection, $_POST['email']));
+								$username = htmlspecialchars(mysqli_real_escape_string($connection, $_POST['username']));
+								$password = htmlspecialchars(mysqli_real_escape_string($connection, $_POST['password']));
 
 								if(isset($email) && isset($username) && isset($password)) {
 									if ($email !== "" && $username !== "" && $password !== "" && 
@@ -301,7 +335,44 @@
 
 										//Insert if is not present
 										if(isset($_SESSION['notPresent']) && $_SESSION['notPresent']) {
-											$query = "INSERT INTO `users`(`email`, `username`, `password`) VALUES ('$email', '$username', '$password')";
+											//Password encryption
+											// include_once 'encryption.php';
+
+											$ciphering = "BF-CBC";
+											$options = 0;
+
+											$iv_length1 = openssl_cipher_iv_length($ciphering);
+											$encryption_iv1 = random_bytes($iv_length1);
+											$encryption_key1 = openssl_digest(php_uname(), 'MD5', TRUE);
+											$encryption1 = openssl_encrypt($password, $ciphering, $encryption_key1, $options, $encryption_iv1);
+
+											$prefixSalt = "я1%т*^ъ52!*ve9ь40@0е1з@3&pг(j}#&!ъ";
+											$iv_length2 = openssl_cipher_iv_length($ciphering);
+											$encryption_iv2 = random_bytes($iv_length2);
+											$encryption_key2 = openssl_digest(php_uname(), 'MD5', TRUE);
+											$encryption2 = openssl_encrypt($prefixSalt, $ciphering, $encryption_key2, $options, $encryption_iv2);
+
+											$suffixSalt = "и1!№§(!)]7{\$ъ*!ь?>>.ъ\"\"4:\$*п@№д9ф2з+_щ,'|";
+											$iv_length3 = openssl_cipher_iv_length($ciphering);
+											$encryption_iv3 = random_bytes($iv_length3);
+											$encryption_key3 = openssl_digest(php_uname(), 'MD5', TRUE);
+											$encryption3 = openssl_encrypt($suffixSalt, $ciphering, $encryption_key3, $options, $encryption_iv3);
+
+											// Add encryption keys
+											$query = "INSERT INTO `enc`(`enc_key1`, `enc_key2`, `enc_key3`, `enc_iv1`, `enc_iv2`, `enc_iv3`) VALUES ('$encryption_key2', '$encryption_key1', '$encryption_key3', '$encryption_iv2', '$encryption_iv1', '$encryption_iv3')";
+											$result = mysqli_query($connection, $query);
+
+											//Select enc_id
+											$query = "SELECT id FROM enc WHERE enc_key1 = '$encryption_key2' AND enc_key2 = '$encryption_key1' AND enc_key3 = '$encryption_key3' AND enc_iv1 = '$encryption_iv2' AND enc_iv2 = '$encryption_iv1' AND enc_iv3 = '$encryption_iv3'";
+											$result = mysqli_query($connection, $query);
+											$row = mysqli_fetch_assoc($result);											
+											if(isset($row['id'])) {
+												$enc_id = $row['id'];
+											}
+
+											$password = $encryption2 . $encryption1 . $encryption3;
+
+											$query = "INSERT INTO `users`(`email`, `username`, `password`, `enc_id`) VALUES ('$email', '$username', '$password', '$enc_id')";
 											$result = mysqli_query($connection, $query);
 											
 											if($result) {
