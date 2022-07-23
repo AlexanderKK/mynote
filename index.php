@@ -161,12 +161,6 @@
 										$_SESSION['username'] = $username;
 										// $_SESSION['password'] = $password;
 
-										// $query = "SELECT enc_iv, enc_key FROM users WHERE username = '$username'";
-										// $result = mysqli_query($connection, $query);
-										// $row = mysqli_fetch_assoc($result);
-										// $encryption_iv = $row['enc_iv'];
-										// $encryption_key = $row['enc_key'];
-
 										$query = "SELECT enc_key1, enc_key2, enc_key3, enc_iv1, enc_iv2, enc_iv3 FROM enc JOIN users ON enc.id = users.enc_id WHERE username = '$username'";
 										$result = mysqli_query($connection, $query);
 										if(mysqli_num_rows($result) == 1) {
@@ -192,7 +186,30 @@
 											$encryption3 = openssl_encrypt($suffixSalt, $ciphering, $encryption_key3, $options, $encryption_iv3);
 
 											$password = $encryption2 . $encryption1 . $encryption3;
-											// echo $password;
+
+											//Decryption :)
+
+											// $query = "SELECT password FROM users WHERE username = '$username'";
+											// $result = mysqli_query($connection, $query);
+											// $row = mysqli_fetch_assoc($result);
+											// $wantedPassword = $row['password'];
+
+											// $wantedEncryption = openssl_encrypt($wantedPassword, $ciphering, $encryption_key1, $options, $encryption_iv1);
+
+											// $decryption_iv1 = $encryption_iv1;
+											// $decryption_key1 = $encryption_key1;
+											// $decryption1 = openssl_decrypt($wantedEncryption, $ciphering, $decryption_key1, $options, $encryption_iv1);
+
+											// $decryption_iv2 = $encryption_iv2;
+											// $decryption_key2 = $encryption_key2;
+											// $decryption2 = openssl_decrypt($encryption2, $ciphering, $decryption_key2, $options, $encryption_iv2);
+
+											// $decryption_iv3 = $encryption_iv3;
+											// $decryption_key3 = $encryption_key3;
+											// $decryption3 = openssl_decrypt($encryption3, $ciphering, $decryption_key3, $options, $encryption_iv3);
+
+											// $decryptedPassword = $decryption1;
+											// echo $decryptedPassword;
 										}
 
 										$query = "SELECT users.id as userID, ranks.title as title FROM users JOIN ranks ON users.rank = ranks.id WHERE username = '$username' AND password = '$password'";

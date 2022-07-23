@@ -50,7 +50,7 @@ registerBtn.addEventListener("click", function() {
 	if(document.querySelector("#emailRegister").value === "" ||
 	document.querySelector("#usernameRegister").value === "" ||
 	document.querySelector("#passwordRegister").value === "") {
-		this.setAttribute('type', "");
+		this.setAttribute('type', "button");
 	}
 	else {
 		this.setAttribute('type', "submit");
@@ -60,7 +60,7 @@ registerBtn.addEventListener("click", function() {
 loginBtn.addEventListener("click", function() {
 	if(document.querySelector("#usernameLogin").value === "" ||
 	document.querySelector("#passwordLogin").value === "") {
-		this.setAttribute('type', "");
+		this.setAttribute('type', "button");
 	}
 	else {
 		this.setAttribute('type', "submit");
