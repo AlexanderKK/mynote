@@ -1,8 +1,8 @@
 <?php
-	$db = 'shrekofoniadev';
-	$localhost = 'localhost';
-	$username = 'shrek';
-	$password = 'impeachment*';
+	$db = '';
+	$localhost = '';
+	$username = '';
+	$password = '';
 
 	$connection = mysqli_connect($localhost, $username, $password, $db);
 	$mysqli = new mysqli($localhost, $username, $password, $db);
